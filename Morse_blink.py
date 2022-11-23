@@ -1,3 +1,4 @@
+# Importing Libraries required for code
 from tkinter import*
 import tkinter.font 
 from gpiozero import LED
@@ -10,8 +11,10 @@ Led = LED (14)
 
 ## GUI DEFINITIONS ##
 win = Tk()
-win.title("LED Toggler")
-myFont = tkinter.font. Font(family = 'Helvetica', size = 12, weight = "bold")
+win.title("LED Toggler") # GUI title 
+myFont = tkinter.font. Font(family = 'Helvetica', size = 12, weight = "bold") # Defining Font 
+
+# A List that stores morse symbol for each alphabet, number and many symbols
 translate_dict = { 'A':'.-', 'B':'-...',
                     'C':'-.-.', 'D':'-..', 'E':'.',
                     'F':'..-.', 'G':'--.', 'H':'....',
@@ -27,22 +30,24 @@ translate_dict = { 'A':'.-', 'B':'-...',
                     '0':'-----', ', ':'--..--', '.':'.-.-.-',
                     '?':'..--..', '/':'-..-.', '-':'-....-',
                     '(':'-.--.', ')':'-.--.-'}
+
+#Defining variable of String type
 ledinput = str()
 
 ### EVENT FUNCTIONS ###
-
-def dash():
+def dash(): # Blink Led correspoding to dash in Morse code
     Led.on()
     time.sleep(0.6)
     Led.off()
     time.sleep(0.3)
-def dot():
+def dot(): # Blink Led correspoding to dot in Morse code
     Led.on()
     time.sleep(0.2)
     Led.off()
     time.sleep(0.1)
-    
-def Morse_code(ledinput):
+
+# Converts String input into Morse code and blinks Led accordingly   
+def Morse_code(ledinput): 
     ledinput = code.get()
     ledinput = " ".join(translate_dict[c] for c in ledinput.upper())
     print(ledinput)
@@ -56,20 +61,25 @@ def Morse_code(ledinput):
         else:
             print("Enter a valid Character")
 
+#Destroy the GUI and clean the code
 def close():
     RPi.GPIO.cleanup()
     win.destroy()
 
 ### WIDGETS ###
-ledButton = Button (win, text = 'Blink Name', font = myFont, command = lambda: Morse_code(ledinput), bg = 'orange', height = 1)
-ledButton.grid (row=0, column=1)
+#Button to call the funtion Morse_code to blink input
+ledButton = Button (win, text = 'Blink Name', font = myFont, command = lambda: Morse_code(ledinput), bg = 'aqua', height = 1)
+ledButton.grid (row=0, column=2)
 
-code = Entry(win, font=myFont, width=10)
-code.grid(row=0, column=0)
+# Entry widget to get input from the User
+code = Entry(win, font=myFont, width=15)
+code.grid(row=0, column=1)
 
+# Exit the GUI and cleans the code
 exitButton = Button (win, text = 'Exit', font = myFont, command = close, bg = 'aqua', height = 1, width = 6)
 exitButton.grid (row=2, column=1)
 
+# To destroy GUI on pressing the cross button in the corner 
 win.protocol("WM_DELETE_WINDOW", close) # exit cleanly
 
 win.mainloop() # Loop forever
