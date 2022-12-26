@@ -9,6 +9,8 @@ import time
 ## hardware
 Led = LED (14)
 
+MAX_LIMIT = 12
+
 ## GUI DEFINITIONS ##
 win = Tk()
 win.title("LED Toggler") # GUI title 
@@ -48,18 +50,23 @@ def dot(): # Blink Led correspoding to dot in Morse code
 
 # Converts String input into Morse code and blinks Led accordingly   
 def Morse_code(ledinput): 
-    ledinput = code.get()
-    ledinput = " ".join(translate_dict[c] for c in ledinput.upper())
-    print(ledinput)
-    for c in ledinput:
-        if c == ".":
-            dot()
-        elif c == "-":
-            dash()
-        elif c == "/" or c == " ":
-            time.sleep(0.5)
-        else:
-            print("Enter a valid Character")
+    ledinput = code.get().upper()
+    if ledinput <= MAX_LIMIT and ledinput > 0:
+        ledinput = " ".join(translate_dict[c] for c in ledinput.upper())
+        print(ledinput)
+        for c in ledinput:
+            if c == ".":
+                dot()
+            elif c == "-":
+                dash()
+            elif c == "/" or c == " ":
+                time.sleep(0.5)
+            else:
+                print("Enter a valid Character")
+    else:
+        print("Error!", "Input cannot exceed " + str(MAX_LIMIT) + " characters or cannot be null")
+        ledinput.set("")
+
 
 #Destroy the GUI and clean the code
 def close():
